@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Calculator glass body container -->
+    <path
+        android:pathData="M32,24 L76,24 A8,8 0 0,1 84,32 L84,76 A8,8 0 0,1 76,84 L32,84 A8,8 0 0,1 24,76 L24,32 A8,8 0 0,1 32,24 Z"
+        android:fillColor="#3D2B60"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="1.5"
+        android:strokeAlpha="0.35" />
+
+    <!-- Screen display bar -->
+    <path
+        android:pathData="M30,30 L78,30 A4,4 0 0,1 82,34 L82,42 A4,4 0 0,1 78,46 L30,46 A4,4 0 0,1 26,42 L26,34 A4,4 0 0,1 30,30 Z"
+        android:fillColor="#1F1538" />
+
+    <!-- Numbers / symbols rows -->
+    <!-- Row 1: dot, dot, dot, operator -->
+    <path
+        android:pathData="M32,53 A3,3 0 1,1 32,53.01 Z M44,53 A3,3 0 1,1 44,53.01 Z M56,53 A3,3 0 1,1 56,53.01 Z"
+        android:fillColor="#FFFFFF"
+        android:fillAlpha="0.8" />
+    <path
+        android:pathData="M68,51 L76,51 L76,53 L68,53 Z M71,48 L73,48 L73,56 L71,56 Z"
+        android:fillColor="#FF8A3D" />
+
+    <!-- Row 2: dot, dot, dot, minus -->
+    <path
+        android:pathData="M32,63 A3,3 0 1,1 32,63.01 Z M44,63 A3,3 0 1,1 44,63.01 Z M56,63 A3,3 0 1,1 56,63.01 Z"
+        android:fillColor="#FFFFFF"
+        android:fillAlpha="0.8" />
+    <path
+        android:pathData="M68,62 L76,62 L76,64 L68,64 Z"
+        android:fillColor="#FF8A3D" />
+
+    <!-- Row 3: dot, dot, dot, equals -->
+    <path
+        android:pathData="M32,73 A3,3 0 1,1 32,73.01 Z M44,73 A3,3 0 1,1 44,73.01 Z M56,73 A3,3 0 1,1 56,73.01 Z"
+        android:fillColor="#FFFFFF"
+        android:fillAlpha="0.8" />
+    <path
+        android:pathData="M68,71 L76,71 L76,72.5 L68,72.5 Z M68,74.5 L76,74.5 L76,76 L68,76 Z"
+        android:fillColor="#FF8A3D" />
+</vector>

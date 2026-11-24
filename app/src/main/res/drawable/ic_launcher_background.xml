@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <path
+        android:pathData="M0,0h108v108h-108z"
+        android:fillColor="#100D1C" />
+    <!-- Gradient ambient blob -->
+    <path
+        android:pathData="M20,20 Q60,-10 90,30 Q120,70 80,95 Q40,120 15,80 Q-10,40 20,20 Z"
+        android:fillColor="#7C3AED" />
+</vector>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Dark mode -->
+    <color name="dark_background">#100D1C</color>
+    <color name="dark_surface">#1C1630</color>
+    <color name="dark_surface_light">#2A1F4A</color>
+    <color name="dark_glass">#221A38</color>
+    <color name="dark_accent">#7C3AED</color>
+    <color name="dark_accent_light">#A855F7</color>
+    <color name="dark_orange">#FF8A3D</color>
+    <color name="dark_orange_light">#FFB36B</color>
+    <color name="dark_text_primary">#F8F7FF</color>
+    <color name="dark_text_secondary">#C9C2E0</color>
+    <color name="dark_divider">#3A2E5A</color>
+
+    <!-- Light mode -->
+    <color name="light_background">#F5F2FF</color>
+    <color name="light_surface">#FFFFFF</color>
+    <color name="light_surface_light">#F0EBF8</color>
+    <color name="light_glass">#E9E2F6</color>
+    <color name="light_accent">#7C3AED</color>
+    <color name="light_accent_light">#A855F7</color>
+    <color name="light_orange">#FF8A3D</color>
+    <color name="light_orange_light">#FFC28A</color>
+    <color name="light_text_primary">#1A172E</color>
+    <color name="light_text_secondary">#5B5570</color>
+    <color name="light_divider">#D8D3E8</color>
+
+    <!-- Status bar colors -->
+    <color name="status_bar_dark">#100D1C</color>
+    <color name="status_bar_light">#F5F2FF</color>
+</resources>
