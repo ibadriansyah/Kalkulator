@@ -271,3 +271,4 @@ export PATH=$JAVA_HOME/bin:$PATH
 ## 13. LICENCE
 
 MIT
+# Kalkulator
