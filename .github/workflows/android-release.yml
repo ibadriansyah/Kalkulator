@@ -4,6 +4,8 @@ on:
   push:
     tags:
       - 'v*'
+    branches:
+      - master
   workflow_dispatch:
 
 permissions:
@@ -17,6 +19,45 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Determine Version
+        id: get_version
+        run: |
+          if [ "${{ github.ref_type }}" = "tag" ]; then
+            TAG="${{ github.ref_name }}"
+            VERSION="${TAG#v}"
+          else
+            VERSION=$(grep 'versionName = ' app/build.gradle.kts | sed -E 's/.*"([^"]+)".*/\1/')
+            TAG="v$VERSION"
+          fi
+          echo "tag=$TAG" >> $GITHUB_OUTPUT
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Building version $VERSION (tag $TAG)"
+
+      - name: Extract Changelog Section
+        id: changelog
+        run: |
+          VERSION="${{ steps.get_version.outputs.version }}"
+          python3 -c "
+          import re, sys
+          version = sys.argv[1]
+          try:
+              with open('CHANGELOG.md', 'r') as f:
+                  text = f.read()
+              pattern = rf'## \[?{re.escape(version)}\]?[^\n]*\n(.*?)(?=\n## |\Z)'
+              match = re.search(pattern, text, re.DOTALL)
+              if match:
+                  notes = match.group(1).strip()
+              else:
+                  notes = 'Release version ' + version
+          except FileNotFoundError:
+              notes = 'Release version ' + version
+          with open('RELEASE_NOTES.md', 'w') as f:
+              f.write(notes + '\n')
+          " "$VERSION"
+          echo "notes_file=RELEASE_NOTES.md" >> $GITHUB_OUTPUT
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
@@ -46,23 +87,28 @@ jobs:
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
         run: ./gradlew assembleRelease --no-daemon
 
+      - name: Rename APK for Release
+        run: |
+          TAG="${{ steps.get_version.outputs.tag }}"
+          mv app/build/outputs/apk/release/app-release.apk app/build/outputs/apk/release/Kalkulator-$TAG.apk
+
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
-        if: startsWith(github.ref, 'refs/tags/')
         with:
-          name: Kalkulator ${{ github.ref_name }}
-          tag_name: ${{ github.ref_name }}
+          name: Kalkulator ${{ steps.get_version.outputs.tag }}
+          tag_name: ${{ steps.get_version.outputs.tag }}
           draft: false
           prerelease: false
+          body_path: RELEASE_NOTES.md
           generate_release_notes: true
           files: |
-            app/build/outputs/apk/release/*.apk
+            app/build/outputs/apk/release/Kalkulator-*.apk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload Release APK as Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: Kalkulator-release-apk
-          path: app/build/outputs/apk/release/*.apk
+          name: Kalkulator-${{ steps.get_version.outputs.tag }}-apk
+          path: app/build/outputs/apk/release/Kalkulator-*.apk
           retention-days: 60
