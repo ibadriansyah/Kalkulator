@@ -10,7 +10,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -25,10 +24,8 @@ import com.dabskutz.kalkulator.ui.theme.LocalDarkTheme
  * Visual Layers:
  * 1. Physical drop shadow for spatial elevation
  * 2. Translucent frosted glass body gradient
- * 3. Upper-half convex specular gloss reflection
- * 4. Crisp top-lip bevel highlight (physical glass edge)
- * 5. Diagonal light refraction sheen
- * 6. Multi-stop refraction border (light source at top-left)
+ * 3. Crisp top-lip bevel highlight (physical glass edge)
+ * 4. Multi-stop refraction border (light source at top-left)
  */
 fun Modifier.liquidGlass(
     shape: Shape = RoundedCornerShape(22.dp),
@@ -84,39 +81,12 @@ fun Modifier.liquidGlass(
             shape = shape
         )
         .drawBehind {
-            // 1. Upper-half convex specular gloss reflection
-            drawRoundRect(
-                brush = Brush.verticalGradient(
-                    colors = listOf(
-                        Color.White.copy(alpha = highlightIntensity),
-                        Color.White.copy(alpha = highlightIntensity * 0.20f),
-                        Color.Transparent
-                    ),
-                    startY = 0f,
-                    endY = size.height * 0.55f
-                ),
-                cornerRadius = CornerRadius(size.width * 0.25f, size.width * 0.25f)
-            )
-
-            // 2. Diagonal sheen across upper quadrant
-            drawRoundRect(
-                brush = Brush.linearGradient(
-                    colors = listOf(
-                        Color.White.copy(alpha = highlightIntensity * 0.45f),
-                        Color.Transparent
-                    ),
-                    start = Offset(0f, 0f),
-                    end = Offset(size.width * 0.65f, size.height * 0.65f)
-                ),
-                cornerRadius = CornerRadius(size.width * 0.25f, size.width * 0.25f)
-            )
-
-            // 3. Beveled top specular lip (creates realistic thickness of polished glass)
+            // Crisp top specular lip for subtle glass thickness
             drawLine(
-                color = Color.White.copy(alpha = (highlightIntensity * 1.6f).coerceAtMost(0.95f)),
-                start = Offset(size.width * 0.15f, 2f),
-                end = Offset(size.width * 0.85f, 2f),
-                strokeWidth = 2.5f
+                color = Color.White.copy(alpha = (highlightIntensity * 1.2f).coerceAtMost(0.85f)),
+                start = Offset(size.width * 0.12f, 1.5f),
+                end = Offset(size.width * 0.88f, 1.5f),
+                strokeWidth = 2f
             )
         }
         .border(

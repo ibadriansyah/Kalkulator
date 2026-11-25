@@ -2,7 +2,6 @@ package com.dabskutz.kalkulator.ui.calculator
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,13 +10,11 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Backspace
@@ -32,7 +29,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.blur
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontFamily
@@ -78,39 +74,6 @@ fun CalculatorScreen(
             .fillMaxSize()
             .background(bgBrush)
     ) {
-        // Ambient glass refraction spheres
-        Box(
-            modifier = Modifier
-                .offset(x = (-40).dp, y = 60.dp)
-                .size(240.dp)
-                .background(
-                    brush = Brush.radialGradient(
-                        colors = listOf(
-                            (if (isDark) LiquidGlassColor.DarkAccent else LiquidGlassColor.LightAccent).copy(alpha = if (isDark) 0.18f else 0.35f),
-                            Color.Transparent
-                        )
-                    ),
-                    shape = CircleShape
-                )
-                .blur(40.dp)
-        )
-        Box(
-            modifier = Modifier
-                .align(Alignment.CenterEnd)
-                .offset(x = 60.dp, y = 100.dp)
-                .size(220.dp)
-                .background(
-                    brush = Brush.radialGradient(
-                        colors = listOf(
-                            (if (isDark) LiquidGlassColor.DarkOrange else LiquidGlassColor.LightOrange).copy(alpha = if (isDark) 0.15f else 0.28f),
-                            Color.Transparent
-                        )
-                    ),
-                    shape = CircleShape
-                )
-                .blur(40.dp)
-        )
-
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -126,23 +89,12 @@ fun CalculatorScreen(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Box(
-                        modifier = Modifier
-                            .size(10.dp)
-                            .background(
-                                color = if (isDark) LiquidGlassColor.DarkOrange else LiquidGlassColor.LightOrange,
-                                shape = CircleShape
-                            )
-                    )
-                    Spacer(modifier = Modifier.size(8.dp))
-                    Text(
-                        text = "Kalkulator",
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onBackground
-                    )
-                }
+                Text(
+                    text = "Kalkulator",
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onBackground
+                )
 
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     GlassBox(
