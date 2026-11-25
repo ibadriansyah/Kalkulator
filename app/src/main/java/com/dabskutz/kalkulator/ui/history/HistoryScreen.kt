@@ -41,6 +41,7 @@ import com.dabskutz.kalkulator.data.history.HistoryEntry
 import com.dabskutz.kalkulator.ui.components.GlassBox
 import com.dabskutz.kalkulator.ui.components.LiquidGlassCard
 import com.dabskutz.kalkulator.ui.theme.LiquidGlassColor
+import com.dabskutz.kalkulator.ui.theme.LocalDarkTheme
 
 @Composable
 fun HistoryScreen(
@@ -50,14 +51,14 @@ fun HistoryScreen(
     onClearAll: () -> Unit,
     historyEntries: List<HistoryEntry>
 ) {
-    val isDark = isSystemInDarkTheme()
+    val isDark = LocalDarkTheme.current
 
     val bgBrush = if (isDark) {
         Brush.verticalGradient(
             colors = listOf(
-                Color(0xFF0F0B1E),
-                Color(0xFF160E2E),
-                Color(0xFF0B0716)
+                Color(0xFF000000),
+                Color(0xFF040406),
+                Color(0xFF000000)
             )
         )
     } else {

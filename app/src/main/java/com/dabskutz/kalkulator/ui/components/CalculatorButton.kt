@@ -2,20 +2,17 @@ package com.dabskutz.kalkulator.ui.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ripple.rememberRipple
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
@@ -27,6 +24,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.dabskutz.kalkulator.ui.theme.LiquidGlassColor
+import com.dabskutz.kalkulator.ui.theme.LocalDarkTheme
 
 enum class ButtonStyle {
     NUMBER,
@@ -36,7 +34,8 @@ enum class ButtonStyle {
 }
 
 /**
- * A calculator button adhering to the Liquid Glass visual language.
+ * A calculator button adhering strictly to the Liquid Glass visual language.
+ * Featuring frosted translucent glass tiles, specular highlights, and refraction borders.
  */
 @Composable
 fun CalculatorButton(
@@ -47,44 +46,54 @@ fun CalculatorButton(
     shape: Shape = RoundedCornerShape(22.dp),
     onClick: () -> Unit
 ) {
-    val isDark = isSystemInDarkTheme()
+    val isDark = LocalDarkTheme.current
     val haptic = LocalHapticFeedback.current
 
-    val (glassBg, glassBorder, textColor) = when (style) {
+    val (glassBg, glassBorder, textColor, highlightIntensity, elevation) = when (style) {
         ButtonStyle.NUMBER -> {
             if (isDark) {
-                Triple(
-                    Color(0x2EFFFFFFL),
-                    Color(0x3DFFFFFFL),
-                    LiquidGlassColor.DarkTextPrimary
+                ButtonGlassConfig(
+                    bg = Color(0x33FFFFFFL), // 20% white translucent crystal glass
+                    border = Color.White.copy(alpha = 0.65f), // Bright specular refraction rim
+                    text = LiquidGlassColor.DarkTextPrimary,
+                    highlight = 0.40f,
+                    elevation = 6.dp
                 )
             } else {
-                Triple(
-                    Color(0x73FFFFFFL),
-                    Color(0x8CFFFFFFL),
-                    LiquidGlassColor.LightTextPrimary
+                ButtonGlassConfig(
+                    bg = Color(0x8AFFFFFFL), // 54% frosted pearl glass
+                    border = Color.White.copy(alpha = 0.90f),
+                    text = LiquidGlassColor.LightTextPrimary,
+                    highlight = 0.45f,
+                    elevation = 4.dp
                 )
             }
         }
         ButtonStyle.OPERATOR -> {
-            Triple(
-                LiquidGlassColor.ActionOperator.copy(alpha = if (isDark) 0.35f else 0.40f),
-                LiquidGlassColor.ActionOperator.copy(alpha = 0.70f),
-                if (isDark) LiquidGlassColor.DarkOrangeLight else LiquidGlassColor.DarkAccent
+            ButtonGlassConfig(
+                bg = if (isDark) LiquidGlassColor.DarkAccent.copy(alpha = 0.42f) else LiquidGlassColor.LightAccent.copy(alpha = 0.35f),
+                border = if (isDark) LiquidGlassColor.DarkAccentLight.copy(alpha = 0.75f) else LiquidGlassColor.LightAccent.copy(alpha = 0.70f),
+                text = if (isDark) LiquidGlassColor.DarkOrangeLight else LiquidGlassColor.DarkAccent,
+                highlight = 0.38f,
+                elevation = 6.dp
             )
         }
         ButtonStyle.EQUALS -> {
-            Triple(
-                LiquidGlassColor.ActionEquals.copy(alpha = if (isDark) 0.55f else 0.65f),
-                LiquidGlassColor.ActionEquals.copy(alpha = 0.85f),
-                Color.White
+            ButtonGlassConfig(
+                bg = if (isDark) LiquidGlassColor.DarkOrange.copy(alpha = 0.70f) else LiquidGlassColor.LightOrange.copy(alpha = 0.75f),
+                border = Color.White.copy(alpha = 0.85f),
+                text = Color.White,
+                highlight = 0.50f,
+                elevation = 8.dp
             )
         }
         ButtonStyle.ACTION -> {
-            Triple(
-                LiquidGlassColor.ActionClear.copy(alpha = if (isDark) 0.28f else 0.32f),
-                LiquidGlassColor.ActionClear.copy(alpha = 0.60f),
-                if (isDark) Color(0xFFFCA5A5L) else LiquidGlassColor.ActionClear
+            ButtonGlassConfig(
+                bg = if (isDark) Color(0x40EF4444L) else Color(0x30EF4444L),
+                border = LiquidGlassColor.ActionClear.copy(alpha = 0.75f),
+                text = if (isDark) Color(0xFFFF9494L) else LiquidGlassColor.ActionClear,
+                highlight = 0.35f,
+                elevation = 5.dp
             )
         }
     }
@@ -95,8 +104,8 @@ fun CalculatorButton(
                 shape = shape,
                 backgroundColor = glassBg,
                 borderColor = glassBorder,
-                elevation = if (style == ButtonStyle.EQUALS) 8.dp else 4.dp,
-                highlightIntensity = if (style == ButtonStyle.EQUALS) 0.4f else 0.25f,
+                elevation = elevation,
+                highlightIntensity = highlightIntensity,
                 isDark = isDark
             )
             .clickable(
@@ -119,6 +128,14 @@ fun CalculatorButton(
     }
 }
 
+private data class ButtonGlassConfig(
+    val bg: Color,
+    val border: Color,
+    val text: Color,
+    val highlight: Float,
+    val elevation: Dp
+)
+
 /**
  * Reusable Liquid Glass card container.
  */
@@ -131,7 +148,7 @@ fun LiquidGlassCard(
     elevation: Dp = 6.dp,
     content: @Composable BoxScope.() -> Unit
 ) {
-    val isDark = isSystemInDarkTheme()
+    val isDark = LocalDarkTheme.current
     Box(
         modifier = modifier
             .liquidGlass(

@@ -2,7 +2,6 @@ package com.dabskutz.kalkulator.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -11,91 +10,118 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.dabskutz.kalkulator.ui.theme.LiquidGlassColor
+import com.dabskutz.kalkulator.ui.theme.LocalDarkTheme
 
 /**
- * Creates a premium Liquid Glass effect modifier.
+ * Creates an authentic Liquid Glass effect modifier.
  *
- * Layers:
- * 1. Soft ambient shadow for depth
- * 2. Translucent frosted glass gradient
- * 3. Specular glossy highlight along top-left edge
- * 4. Crisp subtle border representing glass refraction
+ * Visual Layers:
+ * 1. Physical drop shadow for spatial elevation
+ * 2. Translucent frosted glass body gradient
+ * 3. Upper-half convex specular gloss reflection
+ * 4. Crisp top-lip bevel highlight (physical glass edge)
+ * 5. Diagonal light refraction sheen
+ * 6. Multi-stop refraction border (light source at top-left)
  */
 fun Modifier.liquidGlass(
-    shape: Shape = RoundedCornerShape(24.dp),
+    shape: Shape = RoundedCornerShape(22.dp),
     backgroundColor: Color = Color.Unspecified,
     borderColor: Color = Color.Unspecified,
     elevation: Dp = 6.dp,
-    highlightIntensity: Float = 0.25f,
+    highlightIntensity: Float = 0.38f,
     isDark: Boolean = true
 ): Modifier {
     val baseGlassColor = if (backgroundColor != Color.Unspecified) {
         backgroundColor
     } else if (isDark) {
-        Color(0x2AFFFFFFL) // 16% white overlay
+        Color(0x28FFFFFFL) // Translucent crystal glass over black
     } else {
-        Color(0x66FFFFFFL) // 40% white overlay
+        Color(0x85FFFFFFL) // Frosted pearl glass
     }
 
-    val glassBorderColor = if (borderColor != Color.Unspecified) {
+    val rimHighlightColor = if (borderColor != Color.Unspecified) {
         borderColor
     } else if (isDark) {
-        Color(0x3DFFFFFFL) // 24% white highlight
+        Color.White.copy(alpha = 0.65f)
     } else {
-        Color(0x80FFFFFFL) // 50% white highlight
+        Color.White.copy(alpha = 0.90f)
     }
+
+    val borderBrush = Brush.linearGradient(
+        colors = listOf(
+            rimHighlightColor,
+            rimHighlightColor.copy(alpha = (rimHighlightColor.alpha * 0.35f).coerceIn(0f, 1f)),
+            rimHighlightColor.copy(alpha = (rimHighlightColor.alpha * 0.08f).coerceIn(0f, 1f)),
+            rimHighlightColor.copy(alpha = (rimHighlightColor.alpha * 0.45f).coerceIn(0f, 1f))
+        ),
+        start = Offset(0f, 0f),
+        end = Offset(Float.POSITIVE_INFINITY, Float.POSITIVE_INFINITY)
+    )
 
     return this
         .shadow(
             elevation = elevation,
             shape = shape,
-            spotColor = if (isDark) Color.Black.copy(alpha = 0.35f) else Color(0x337C3AEDL),
-            ambientColor = if (isDark) Color.Black.copy(alpha = 0.15f) else Color(0x1A7C3AEDL)
+            spotColor = if (isDark) Color.Black.copy(alpha = 0.85f) else Color(0x337C3AEDL),
+            ambientColor = if (isDark) Color.Black.copy(alpha = 0.55f) else Color(0x1A7C3AEDL)
         )
         .clip(shape)
         .background(
-            brush = Brush.linearGradient(
+            brush = Brush.verticalGradient(
                 colors = listOf(
-                    baseGlassColor.copy(alpha = (baseGlassColor.alpha * 1.25f).coerceAtMost(1f)),
-                    baseGlassColor.copy(alpha = (baseGlassColor.alpha * 0.75f))
-                ),
-                start = Offset(0f, 0f),
-                end = Offset(Float.POSITIVE_INFINITY, Float.POSITIVE_INFINITY)
+                    baseGlassColor.copy(alpha = (baseGlassColor.alpha * 1.35f).coerceAtMost(1f)),
+                    baseGlassColor.copy(alpha = (baseGlassColor.alpha * 0.65f)),
+                    baseGlassColor.copy(alpha = (baseGlassColor.alpha * 1.15f).coerceAtMost(1f))
+                )
             ),
             shape = shape
         )
         .drawBehind {
-            // Specular reflection / glossy highlight from top-left
-            drawRect(
-                brush = Brush.linearGradient(
+            // 1. Upper-half convex specular gloss reflection
+            drawRoundRect(
+                brush = Brush.verticalGradient(
                     colors = listOf(
                         Color.White.copy(alpha = highlightIntensity),
-                        Color.White.copy(alpha = highlightIntensity * 0.2f),
+                        Color.White.copy(alpha = highlightIntensity * 0.20f),
+                        Color.Transparent
+                    ),
+                    startY = 0f,
+                    endY = size.height * 0.55f
+                ),
+                cornerRadius = CornerRadius(size.width * 0.25f, size.width * 0.25f)
+            )
+
+            // 2. Diagonal sheen across upper quadrant
+            drawRoundRect(
+                brush = Brush.linearGradient(
+                    colors = listOf(
+                        Color.White.copy(alpha = highlightIntensity * 0.45f),
                         Color.Transparent
                     ),
                     start = Offset(0f, 0f),
-                    end = Offset(size.width * 0.7f, size.height * 0.7f)
-                )
+                    end = Offset(size.width * 0.65f, size.height * 0.65f)
+                ),
+                cornerRadius = CornerRadius(size.width * 0.25f, size.width * 0.25f)
+            )
+
+            // 3. Beveled top specular lip (creates realistic thickness of polished glass)
+            drawLine(
+                color = Color.White.copy(alpha = (highlightIntensity * 1.6f).coerceAtMost(0.95f)),
+                start = Offset(size.width * 0.15f, 2f),
+                end = Offset(size.width * 0.85f, 2f),
+                strokeWidth = 2.5f
             )
         }
         .border(
-            width = 1.dp,
-            brush = Brush.linearGradient(
-                colors = listOf(
-                    glassBorderColor,
-                    glassBorderColor.copy(alpha = glassBorderColor.alpha * 0.3f),
-                    glassBorderColor.copy(alpha = glassBorderColor.alpha * 0.6f)
-                ),
-                start = Offset(0f, 0f),
-                end = Offset(Float.POSITIVE_INFINITY, Float.POSITIVE_INFINITY)
-            ),
+            width = 1.3.dp,
+            brush = borderBrush,
             shape = shape
         )
 }
@@ -106,14 +132,14 @@ fun Modifier.liquidGlass(
 @Composable
 fun GlassBox(
     modifier: Modifier = Modifier,
-    shape: Shape = RoundedCornerShape(24.dp),
+    shape: Shape = RoundedCornerShape(22.dp),
     backgroundColor: Color = Color.Unspecified,
     borderColor: Color = Color.Unspecified,
     elevation: Dp = 6.dp,
-    highlightIntensity: Float = 0.25f,
+    highlightIntensity: Float = 0.38f,
     content: @Composable BoxScope.() -> Unit
 ) {
-    val isDark = isSystemInDarkTheme()
+    val isDark = LocalDarkTheme.current
     Box(
         modifier = modifier.liquidGlass(
             shape = shape,

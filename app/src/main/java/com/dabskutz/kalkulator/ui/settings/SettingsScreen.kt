@@ -39,6 +39,7 @@ import com.dabskutz.kalkulator.data.preferences.ThemeMode
 import com.dabskutz.kalkulator.ui.components.GlassBox
 import com.dabskutz.kalkulator.ui.components.LiquidGlassCard
 import com.dabskutz.kalkulator.ui.theme.LiquidGlassColor
+import com.dabskutz.kalkulator.ui.theme.LocalDarkTheme
 
 @Composable
 fun SettingsScreen(
@@ -47,14 +48,14 @@ fun SettingsScreen(
     onThemeChanged: (ThemeMode) -> Unit,
     onClearHistory: () -> Unit
 ) {
-    val isDark = isSystemInDarkTheme()
+    val isDark = LocalDarkTheme.current
 
     val bgBrush = if (isDark) {
         Brush.verticalGradient(
             colors = listOf(
-                Color(0xFF0F0B1E),
-                Color(0xFF160E2E),
-                Color(0xFF0B0716)
+                Color(0xFF000000),
+                Color(0xFF040406),
+                Color(0xFF000000)
             )
         )
     } else {
@@ -156,7 +157,7 @@ fun SettingsScreen(
                     )
                     ThemeOptionRow(
                         title = "Dark Mode",
-                        subtitle = "Deep purple cosmic glass aesthetics",
+                        subtitle = "Pure black liquid glass aesthetics",
                         isSelected = themeMode == ThemeMode.Dark,
                         onSelect = { onThemeChanged(ThemeMode.Dark) },
                         isDark = isDark

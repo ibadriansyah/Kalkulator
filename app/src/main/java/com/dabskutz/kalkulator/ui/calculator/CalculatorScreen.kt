@@ -44,6 +44,7 @@ import com.dabskutz.kalkulator.ui.components.ButtonStyle
 import com.dabskutz.kalkulator.ui.components.CalculatorButton
 import com.dabskutz.kalkulator.ui.components.GlassBox
 import com.dabskutz.kalkulator.ui.theme.LiquidGlassColor
+import com.dabskutz.kalkulator.ui.theme.LocalDarkTheme
 
 @Composable
 fun CalculatorScreen(
@@ -52,14 +53,14 @@ fun CalculatorScreen(
     viewModel: CalculatorViewModel
 ) {
     val state by viewModel.state.collectAsState()
-    val isDark = isSystemInDarkTheme()
+    val isDark = LocalDarkTheme.current
 
     val bgBrush = if (isDark) {
         Brush.verticalGradient(
             colors = listOf(
-                Color(0xFF0F0B1E),
-                Color(0xFF160E2E),
-                Color(0xFF0B0716)
+                Color(0xFF000000),
+                Color(0xFF040406),
+                Color(0xFF000000)
             )
         )
     } else {
@@ -85,7 +86,7 @@ fun CalculatorScreen(
                 .background(
                     brush = Brush.radialGradient(
                         colors = listOf(
-                            (if (isDark) LiquidGlassColor.DarkAccent else LiquidGlassColor.LightAccent).copy(alpha = 0.35f),
+                            (if (isDark) LiquidGlassColor.DarkAccent else LiquidGlassColor.LightAccent).copy(alpha = if (isDark) 0.18f else 0.35f),
                             Color.Transparent
                         )
                     ),
@@ -101,7 +102,7 @@ fun CalculatorScreen(
                 .background(
                     brush = Brush.radialGradient(
                         colors = listOf(
-                            (if (isDark) LiquidGlassColor.DarkOrange else LiquidGlassColor.LightOrange).copy(alpha = 0.28f),
+                            (if (isDark) LiquidGlassColor.DarkOrange else LiquidGlassColor.LightOrange).copy(alpha = if (isDark) 0.15f else 0.28f),
                             Color.Transparent
                         )
                     ),

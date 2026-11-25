@@ -9,18 +9,18 @@ import androidx.compose.ui.graphics.Color
 object LiquidGlassColor {
 
     // ---- Dark mode ----
-    val DarkBackground = Color(0xFF100D1CL)
-    val DarkSurface = Color(0xFF1C1630L)
-    val DarkSurfaceLight = Color(0xFF2A1F4AL)
-    val DarkGlass = Color(0x33FFFFFFL) // 20% white overlay
-    val DarkGlassBorder = Color(0x4DFFFFFFL) // 30% white highlight
+    val DarkBackground = Color(0xFF000000L) // Pure black
+    val DarkSurface = Color(0xFF0D0D12L)
+    val DarkSurfaceLight = Color(0xFF161620L)
+    val DarkGlass = Color(0x2EFFFFFFL) // 18% white overlay
+    val DarkGlassBorder = Color(0x59FFFFFFL) // 35% white highlight
     val DarkAccent = Color(0xFF7C3AEDL)
     val DarkAccentLight = Color(0xFFA855F7L)
     val DarkOrange = Color(0xFFFF8A3DL)
     val DarkOrangeLight = Color(0xFFFFB36BL)
-    val DarkTextPrimary = Color(0xFFF8F7FFL)
-    val DarkTextSecondary = Color(0xFFC9C2E0L)
-    val DarkDivider = Color(0xFF3A2E5AL)
+    val DarkTextPrimary = Color(0xFFFFFFFFL)
+    val DarkTextSecondary = Color(0xFFA19DB5L)
+    val DarkDivider = Color(0xFF22222CL)
 
     // ---- Light mode ----
     val LightBackground = Color(0xFFF5F2FFL)
