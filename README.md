@@ -1,60 +1,38 @@
-# Kalkulator — Aplikasi Android Liquid Glass Premium
+## Kalkulator — Premium Liquid Glass Android App
+​Welcome to Kalkulator, an innovative Android calculator app designed with a stunning Liquid Glass aesthetic. Enjoy a high-precision calculation experience alongside a modern, responsive user interface.
+​
+# Key Features
+​Pure Liquid Glass Design: The entire interface, from the background to the buttons, features a luxurious frosted glass effect, glossy highlights, and captivating visual depth.
+​True AMOLED Dark Mode: Enjoy a dark mode with a pitch-black (OLED-friendly) background that is easy on the eyes and saves battery, complete with high-contrast glassmorphic accents.
+​High-Precision Calculation Engine: Powered by BigDecimal, Kalkulator offers accurate arbitrary-precision calculations, ideal for complex mathematical needs.
+​Adaptive & Responsive UI: A layout optimized for various Android screen sizes, ensuring a consistent and beautiful experience on every device.
+​Calculation History: Easily access your calculation history, complete with intuitive Liquid Glass cards to reuse or delete entries.
+​Dynamic Theme Settings: Switch between System, Light, or Dark themes instantly right from the app.
 
-Selamat datang di Kalkulator, aplikasi kalkulator Android inovatif yang dirancang dengan estetika **Liquid Glass** yang memukau. Nikmati pengalaman perhitungan yang presisi tinggi dan antarmuka pengguna yang modern serta responsif.
+​# Liquid Glass Design
+​Liquid Glass is the core identity of Kalkulator. It is not just ordinary transparency, but a complex visual blend that creates a living glass effect:
+​Translucent Glass Surfaces: Clear glass layers that provide visual depth.
+​Frosted Glass Effect: An elegant, matte glass texture.
+​Glossy Highlights & Reflections: Dynamic light reflections giving a wet and luxurious look.
+​Layered Components: Buttons and panels that feel as though they consist of multiple layers of glass.
+​Rounded Corners: Smooth and modern shapes.
+​Every number button is designed with multi-layered Liquid Glass details, including drop shadows, frosted glass body gradients, and subtle light-refracting borders, ensuring a visually immersive tactile experience.
 
----
+​# Advanced Calculation Engine
+​Kalkulator uses a BigDecimal-based calculation engine for unmatched accuracy, avoiding standard floating-point precision issues. It supports basic arithmetic operators (+, -, ×, ÷), percentages, positive/negative signs, and order of operations handling via recursive parsing.
+​
+# Getting Started
+​Download the latest version of the Kalkulator app directly from GitHub Releases or via artifacts from GitHub Actions CI/CD.
 
-## ✨ Fitur Utama
+​# Future Enhancements
+​We are continuously working to bring more features and improvements, including:
+​Compose Multiplatform support
+​App Widgets (AppWidget)
+​Result memory / persistent display history
+​Expression history with date grouping
+​Richer Haptic Feedback
+​Custom theme presets
+​GPU-accelerated rendering polish
+​Thank you for using Kalkulator! If you have any questions or suggestions, feel free to submit them on the GitHub repository.
 
-- **Desain Liquid Glass Murni**: Seluruh antarmuka, mulai dari latar belakang hingga tombol-tombol, tampil dengan efek kaca beku yang mewah, sorotan glossy, dan kedalaman visual yang menawan.
-- **Mode Gelap AMOLED Sejati**: Nikmati mode gelap dengan latar belakang hitam pekat (OLED-friendly) yang nyaman di mata dan hemat baterai, dilengkapi dengan aksen glassmorphic yang tetap kontras.
-- **Mesin Perhitungan Presisi Tinggi**: Ditenagai oleh `BigDecimal`, Kalkulator menawarkan perhitungan arbitrer-presisi yang akurat, ideal untuk kebutuhan matematis yang kompleks.
-- **UI Adaptif & Responsif**: Tampilan yang dioptimalkan untuk berbagai ukuran layar Android, memastikan pengalaman yang konsisten dan indah di setiap perangkat.
-- **Riwayat Perhitungan**: Akses riwayat perhitungan Anda dengan mudah, lengkap dengan kartu Liquid Glass yang intuitif untuk mengulang atau menghapus entri.
-- **Pengaturan Tema Dinamis**: Beralih antara tema Sistem, Terang, atau Gelap secara instan langsung dari aplikasi.
-
----
-
-## 💎 Desain Liquid Glass
-
-**Liquid Glass** adalah identitas utama Kalkulator. Ini bukan sekadar transparansi biasa, melainkan perpaduan visual kompleks yang menciptakan efek kaca yang hidup:
-
-- **Permukaan Kaca Translusen**: Lapisan-lapisan kaca bening yang memberikan kedalaman.
-- **Efek Frosted Glass**: Tekstur kaca buram yang elegan.
-- **Sorotan Glossy & Refleksi**: Pantulan cahaya yang dinamis memberikan tampilan basah dan mewah.
-- **Komponen Berlapis**: Tombol dan panel yang terasa memiliki beberapa lapisan kaca.
-- **Sudut Membulat**: Bentuk yang halus dan modern.
-
-Setiap tombol angka didesain dengan detail Liquid Glass multi-layer, mencakup bayangan jatuh, gradien tubuh kaca beku, dan border refraksi cahaya yang halus, memastikan pengalaman sentuhan yang imersif secara visual.
-
----
-
-## ⚙️ Mesin Perhitungan Canggih
-
-Kalkulator menggunakan mesin perhitungan berbasis **BigDecimal** untuk akurasi yang tak tertandingi, menghindari masalah presisi floating-point standar. Ia mendukung operator aritmetika dasar (+, -, ×, ÷), persentase, tanda positif/negatif, dan penanganan urutan operasi dengan parse rekursif.
-
----
-
-## 🚀 Mulai Menggunakan
-
-Unduh aplikasi Kalkulator versi terbaru langsung dari [GitHub Releases](https://github.com/ibadriansyah/Kalkulator/releases) atau melalui artefak dari [GitHub Actions CI/CD](https://github.com/ibadriansyah/Kalkulator/actions).
-
----
-
-## ✨ Peningkatan di Masa Depan
-
-Kami terus berupaya untuk membawa lebih banyak fitur dan peningkatan, termasuk:
-
-- Dukungan Multiplatform Compose
-- Widget Aplikasi (AppWidget)
-- Memori hasil / riwayat tampilan persisten
-- Riwayat ekspresi dengan pengelompokan tanggal
-- Masukan Haptik (Haptic Feedback) yang lebih kaya
-- Preset tema kustom
-- Poles rendering yang diakselerasi GPU
-
----
-
-Terima kasih telah menggunakan Kalkulator! Jika Anda memiliki pertanyaan atau saran, jangan ragu untuk menyampaikannya di repositori GitHub.
-
-# Kalkulator
+## ​Kalkulator
