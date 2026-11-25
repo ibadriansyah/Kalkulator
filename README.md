@@ -9,7 +9,7 @@
 ​Calculation History: Easily access your calculation history, complete with intuitive Liquid Glass cards to reuse or delete entries.
 ​Dynamic Theme Settings: Switch between System, Light, or Dark themes instantly right from the app.
 
-​# Liquid Glass Design
+​- Liquid Glass Design
 ​Liquid Glass is the core identity of Kalkulator. It is not just ordinary transparency, but a complex visual blend that creates a living glass effect:
 ​Translucent Glass Surfaces: Clear glass layers that provide visual depth.
 ​Frosted Glass Effect: An elegant, matte glass texture.
@@ -18,13 +18,13 @@
 ​Rounded Corners: Smooth and modern shapes.
 ​Every number button is designed with multi-layered Liquid Glass details, including drop shadows, frosted glass body gradients, and subtle light-refracting borders, ensuring a visually immersive tactile experience.
 
-​# Advanced Calculation Engine
+​- Advanced Calculation Engine
 ​Kalkulator uses a BigDecimal-based calculation engine for unmatched accuracy, avoiding standard floating-point precision issues. It supports basic arithmetic operators (+, -, ×, ÷), percentages, positive/negative signs, and order of operations handling via recursive parsing.
 ​
-# Getting Started
+- Getting Started
 ​Download the latest version of the Kalkulator app directly from GitHub Releases or via artifacts from GitHub Actions CI/CD.
 
-​# Future Enhancements
+​- Future Enhancements
 ​We are continuously working to bring more features and improvements, including:
 ​Compose Multiplatform support
 ​App Widgets (AppWidget)
