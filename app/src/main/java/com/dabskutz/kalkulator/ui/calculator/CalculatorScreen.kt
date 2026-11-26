@@ -178,7 +178,7 @@ fun CalculatorScreen(
                             horizontalArrangement = Arrangement.End
                         ) {
                             Text(
-                                text = state.expression.ifEmpty { " " },
+                                text = state.displayExpression.ifEmpty { " " },
                                 fontSize = 26.sp,
                                 fontFamily = FontFamily.Monospace,
                                 color = if (isDark) LiquidGlassColor.DarkTextSecondary else LiquidGlassColor.LightTextSecondary,
@@ -208,7 +208,7 @@ fun CalculatorScreen(
                             horizontalArrangement = Arrangement.End
                         ) {
                             Text(
-                                text = state.result,
+                                text = state.displayResult,
                                 fontSize = 48.sp,
                                 fontWeight = FontWeight.SemiBold,
                                 fontFamily = FontFamily.Monospace,

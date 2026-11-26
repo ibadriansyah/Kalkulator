@@ -39,15 +39,36 @@ class CalculatorViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Helper: given a new raw expression, compute display expression,
+     * preview result, and display result in one shot.
+     */
+    private fun buildUpdate(
+        curr: CalculatorState,
+        newRawExpr: String,
+        clearError: Boolean = true
+    ): CalculatorState {
+        val displayExpr = NumberFormatter.formatExpression(newRawExpr)
+        val preview = previewResult(newRawExpr)
+        val rawResult = preview ?: curr.result
+        val displayRes = if (preview != null) {
+            formatResultForDisplay(preview)
+        } else {
+            curr.displayResult
+        }
+        return curr.copy(
+            expression = newRawExpr,
+            displayExpression = displayExpr,
+            result = rawResult,
+            displayResult = displayRes,
+            error = if (clearError) null else curr.error
+        )
+    }
+
     fun onDigit(digit: String) {
         _state.update { curr ->
             val newExpr = if (curr.expression == "0") digit else curr.expression + digit
-            val preview = previewResult(newExpr)
-            curr.copy(
-                expression = newExpr,
-                result = preview ?: curr.result,
-                error = null
-            )
+            buildUpdate(curr, newExpr)
         }
     }
 
@@ -56,9 +77,9 @@ class CalculatorViewModel @Inject constructor(
             val expr = curr.expression
             if (expr.isEmpty()) {
                 if (op == "−" || op == "-") {
-                    return@update curr.copy(expression = "−", error = null)
+                    return@update buildUpdate(curr, "−")
                 }
-                return@update curr.copy(expression = "0$op", error = null)
+                return@update buildUpdate(curr, "0$op")
             }
             val lastChar = expr.last()
             val newExpr = if (isOperatorChar(lastChar)) {
@@ -66,7 +87,7 @@ class CalculatorViewModel @Inject constructor(
             } else {
                 expr + op
             }
-            curr.copy(expression = newExpr, error = null)
+            buildUpdate(curr, newExpr)
         }
     }
 
@@ -74,15 +95,15 @@ class CalculatorViewModel @Inject constructor(
         _state.update { curr ->
             val expr = curr.expression
             if (expr.isEmpty()) {
-                return@update curr.copy(expression = "0.", error = null)
+                return@update buildUpdate(curr, "0.")
             }
             val lastChar = expr.last()
             if (isOperatorChar(lastChar) || lastChar == '(') {
-                return@update curr.copy(expression = "$expr 0.", error = null)
+                return@update buildUpdate(curr, "${expr}0.")
             }
             val lastSegment = expr.split('+', '−', '-', '×', '*', '÷', '/', '(', ')', '%').last()
             if (!lastSegment.contains('.')) {
-                curr.copy(expression = "$expr.", error = null)
+                buildUpdate(curr, "$expr.")
             } else {
                 curr
             }
@@ -107,12 +128,7 @@ class CalculatorViewModel @Inject constructor(
                     "$expr×("
                 }
             }
-            val preview = previewResult(newExpr)
-            curr.copy(
-                expression = newExpr,
-                result = preview ?: curr.result,
-                error = null
-            )
+            buildUpdate(curr, newExpr)
         }
     }
 
@@ -123,12 +139,7 @@ class CalculatorViewModel @Inject constructor(
                 return@update curr
             }
             val newExpr = "$expr%"
-            val preview = previewResult(newExpr)
-            curr.copy(
-                expression = newExpr,
-                result = preview ?: curr.result,
-                error = null
-            )
+            buildUpdate(curr, newExpr)
         }
     }
 
@@ -144,12 +155,7 @@ class CalculatorViewModel @Inject constructor(
             } else {
                 "−$expr"
             }
-            val preview = previewResult(newExpr)
-            curr.copy(
-                expression = newExpr,
-                result = preview ?: curr.result,
-                error = null
-            )
+            buildUpdate(curr, newExpr)
         }
     }
 
@@ -157,7 +163,9 @@ class CalculatorViewModel @Inject constructor(
         _state.update {
             it.copy(
                 expression = "",
+                displayExpression = "",
                 result = "0",
+                displayResult = "0",
                 error = null
             )
         }
@@ -167,14 +175,19 @@ class CalculatorViewModel @Inject constructor(
         _state.update { curr ->
             if (curr.expression.isNotEmpty()) {
                 val newExpr = curr.expression.dropLast(1)
-                val preview = if (newExpr.isEmpty()) "0" else (previewResult(newExpr) ?: curr.result)
-                curr.copy(
-                    expression = newExpr,
-                    result = preview,
-                    error = null
-                )
+                if (newExpr.isEmpty()) {
+                    curr.copy(
+                        expression = "",
+                        displayExpression = "",
+                        result = "0",
+                        displayResult = "0",
+                        error = null
+                    )
+                } else {
+                    buildUpdate(curr, newExpr)
+                }
             } else {
-                curr.copy(result = "0", error = null)
+                curr.copy(result = "0", displayResult = "0", error = null)
             }
         }
     }
@@ -187,14 +200,17 @@ class CalculatorViewModel @Inject constructor(
         val evalResult = CalculatorEngine.evaluate(expr)
         evalResult.fold(
             onSuccess = { decimalValue ->
-                val formatted = CalculatorEngine.formatResult(decimalValue)
+                val rawFormatted = CalculatorEngine.formatResult(decimalValue)
+                val displayFormatted = formatResultForDisplay(rawFormatted)
                 viewModelScope.launch {
                     historyRepository.addEntry(expr, decimalValue)
                 }
                 _state.update {
                     it.copy(
-                        expression = formatted,
-                        result = formatted,
+                        expression = rawFormatted,
+                        displayExpression = displayFormatted,
+                        result = rawFormatted,
+                        displayResult = displayFormatted,
                         error = null
                     )
                 }
@@ -216,11 +232,15 @@ class CalculatorViewModel @Inject constructor(
     }
 
     fun onReuseHistory(entry: HistoryEntry) {
-        val formatted = CalculatorEngine.formatResult(entry.result)
+        val rawFormatted = CalculatorEngine.formatResult(entry.result)
+        val displayFormatted = formatResultForDisplay(rawFormatted)
+        val displayExpr = NumberFormatter.formatExpression(entry.expression)
         _state.update {
             it.copy(
                 expression = entry.expression,
-                result = formatted,
+                displayExpression = displayExpr,
+                result = rawFormatted,
+                displayResult = displayFormatted,
                 error = null
             )
         }
@@ -238,11 +258,28 @@ class CalculatorViewModel @Inject constructor(
         }
     }
 
+    // -----------------------------------------------------------------
+    // Private helpers
+    // -----------------------------------------------------------------
+
     private fun previewResult(expression: String): String? {
         return CalculatorEngine.evaluate(expression).fold(
             onSuccess = { CalculatorEngine.formatResult(it) },
             onFailure = { null }
         )
+    }
+
+    /**
+     * Takes a raw result string (from CalculatorEngine.formatResult) and
+     * returns a display-formatted version with thousands separators.
+     * Engineering notation (contains 'E') is left as-is.
+     */
+    private fun formatResultForDisplay(raw: String): String {
+        return if (raw.contains('E') || raw.contains('e')) {
+            raw
+        } else {
+            NumberFormatter.addThousandsSeparator(raw)
+        }
     }
 
     private fun isOperatorChar(c: Char): Boolean {

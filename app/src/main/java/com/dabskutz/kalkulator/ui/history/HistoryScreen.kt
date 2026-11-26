@@ -37,6 +37,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.dabskutz.kalkulator.core.calculator.CalculatorEngine
+import com.dabskutz.kalkulator.core.calculator.NumberFormatter
 import com.dabskutz.kalkulator.data.history.HistoryEntry
 import com.dabskutz.kalkulator.ui.components.GlassBox
 import com.dabskutz.kalkulator.ui.components.LiquidGlassCard
@@ -222,7 +223,7 @@ private fun HistoryCard(
         ) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = entry.expression,
+                    text = NumberFormatter.formatExpression(entry.expression),
                     fontSize = 16.sp,
                     fontFamily = FontFamily.Monospace,
                     color = if (isDark) LiquidGlassColor.DarkTextSecondary else LiquidGlassColor.LightTextSecondary,
@@ -230,7 +231,7 @@ private fun HistoryCard(
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text = "= " + CalculatorEngine.formatResult(entry.result),
+                    text = "= " + NumberFormatter.formatResultDisplay(entry.result),
                     fontSize = 24.sp,
                     fontWeight = FontWeight.SemiBold,
                     fontFamily = FontFamily.Monospace,

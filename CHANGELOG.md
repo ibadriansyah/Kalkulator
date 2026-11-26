@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.2] - 2026-11-25
+### Fixed
+- Fixed thousands separator formatting bug for numbers ≥100,000 (millions, billions).
+- Separated raw computational string from formatted display string to prevent double-formatting and NaN errors.
+- Added id-ID locale thousands separator (dots) every 3 digits from the right.
+- Parser defensively cleanses separators from inputs to ensure uninterrupted evaluation.
+- Added comprehensive unit tests for separator formatting, stripping, and large numbers.
+
 ## [1.0.1] - 2026-11-25
 ### Changed
 - Refactored UI to pure black (OLED) in Dark Mode.

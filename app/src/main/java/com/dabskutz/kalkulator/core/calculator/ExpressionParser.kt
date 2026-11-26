@@ -7,7 +7,9 @@ import java.math.RoundingMode
  * Robust recursive-descent expression parser.
  * Handles operators (+, -, *, /, %, parenthesis), decimals, and negative numbers.
  */
-internal class ExpressionParser(private val rawExpression: String) {
+internal class ExpressionParser(rawExpression: String) {
+
+    private val rawExpression: String = NumberFormatter.stripSeparators(rawExpression)
 
     private enum class TokenType {
         NUMBER, PLUS, MINUS, MULTIPLY, DIVIDE, PERCENT, LEFT_PAREN, RIGHT_PAREN, END
