@@ -149,20 +149,44 @@ object NumberFormatter {
 
     /**
      * Strips thousands separator dots from a formatted expression, restoring
-     * the raw computational form.
+     * the raw computational form without corrupting valid decimal points.
      *
-     * Logic: dots that are thousands separators are removed; the decimal comma
-     * is converted back to a decimal point.
-     *
-     * Example: "1.000.000" -> "1000000", "123.456,78" -> "123456.78"
+     * In id-ID locale:
+     * - If the expression contains a comma (','), the comma is the decimal separator,
+     *   so all dots ('.') are thousands separators and are removed, and comma becomes '.'.
+     *   Example: "1.000.000,5" -> "1000000.5", "0,5" -> "0.5"
+     * - If the expression has NO comma (','):
+     *   Dots are only stripped if they represent thousands separators (e.g. multiple dots
+     *   like "1.000.000" or single dot with 3 digits and non-zero prefix like "100.000").
+     *   Genuine decimal dots (like "0.1", "0.2", "1.25", "3.14159") are preserved intact.
      */
     fun stripSeparators(formatted: String): String {
-        // Replace DECIMAL_SEP (comma) with a placeholder, strip THOUSANDS_SEP (dots),
-        // then restore the decimal point.
-        return formatted
-            .replace(DECIMAL_SEP, '\u0000')   // protect decimal comma
-            .replace(THOUSANDS_SEP.toString(), "")  // remove thousands dots
-            .replace('\u0000', '.')            // restore decimal point
+        if (formatted.isEmpty()) return formatted
+
+        // If it contains comma ',', comma is the decimal separator (id-ID locale)
+        if (formatted.contains(DECIMAL_SEP)) {
+            return formatted
+                .replace(THOUSANDS_SEP.toString(), "")
+                .replace(DECIMAL_SEP, '.')
+        }
+
+        // Token-based cleaning for strings without commas:
+        return formatted.replace(Regex("""\d+(?:\.\d+)+""")) { matchResult ->
+            val token = matchResult.value
+            val dots = token.count { it == '.' }
+            if (dots > 1) {
+                token.replace(".", "")
+            } else if (dots == 1) {
+                val parts = token.split('.')
+                if (parts[1].length == 3 && parts[0] != "0") {
+                    parts[0] + parts[1]
+                } else {
+                    token
+                }
+            } else {
+                token
+            }
+        }
     }
 
     /**

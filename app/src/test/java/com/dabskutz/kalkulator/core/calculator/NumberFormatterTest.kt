@@ -113,6 +113,14 @@ class NumberFormatterTest {
         assertEquals("42", NumberFormatter.stripSeparators("42"))
     }
 
+    @Test
+    fun testStripSeparators_preservesDecimalPoints() {
+        assertEquals("0.1 + 0.2", NumberFormatter.stripSeparators("0.1 + 0.2"))
+        assertEquals("1.25 × 4", NumberFormatter.stripSeparators("1.25 × 4"))
+        assertEquals("3.14159", NumberFormatter.stripSeparators("3.14159"))
+        assertEquals("0.5", NumberFormatter.stripSeparators("0.5"))
+    }
+
     // ---- formatResultDisplay ----
 
     @Test
